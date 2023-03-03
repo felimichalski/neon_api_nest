@@ -23,11 +23,11 @@ export class ProductsService {
   }
 
   findAllFeatured() {
-    return this.productsRepository.find({
-      where: {
-        isFeatured: true,
-      },
-    });
+    return this.productsRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.category', 'category')
+      .where('product.isFeatured = true')
+      .getMany();
   }
 
   findOne(id: number) {
