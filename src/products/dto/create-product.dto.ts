@@ -4,13 +4,13 @@ export class CreateProductDto {
   @IsNotEmpty()
   @MinLength(4)
   @MaxLength(15)
-  name: string;
+  title: string;
 
   @IsNotEmpty()
   image: string;
 
   @IsNotEmpty()
-  price: number;
+  unit_price: number;
 
   category?: number;
 

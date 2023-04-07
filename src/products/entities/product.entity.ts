@@ -14,13 +14,13 @@ export class Product {
   id: number;
 
   @Column()
-  name: string;
+  title: string;
 
   @Column()
   image: string;
 
   @Column('float')
-  price: number;
+  unit_price: number;
 
   @ManyToOne(() => Category, { cascade: true })
   @JoinColumn({ name: 'category' })

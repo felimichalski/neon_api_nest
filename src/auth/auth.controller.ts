@@ -14,4 +14,11 @@ export class AuthController {
     req.user.userToken = userToken;
     res.send(req.user);
   }
+
+  @Post('/signup')
+  async signup(@Req() req, @Res() res) {
+    const userToken = await this.authService.getJwt(req.user);
+    req.user.userToken = userToken;
+    res.send(req.user);
+  }
 }

@@ -10,6 +10,7 @@ import { SocialModule } from './social/social.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UsersModule } from './users/users.module';
     CloudinaryModule,
     AuthModule,
     UsersModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

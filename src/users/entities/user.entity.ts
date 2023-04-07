@@ -1,5 +1,5 @@
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class User {
@@ -14,9 +14,6 @@ export class User {
 
   @Column({ unique: true })
   email: string;
-
-  @Column({ unique: true })
-  username: string;
 
   @Column({ select: false })
   password: string;

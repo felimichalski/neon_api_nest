@@ -32,11 +32,11 @@ export class UsersService {
     });
   }
 
-  async findForAuth(username: string) {
+  async findForAuth(email: string) {
     return await this.usersRepository
       .createQueryBuilder()
       .addSelect('User.password', 'User_password')
-      .where({ username })
+      .where({ email })
       .getOne();
   }
 
