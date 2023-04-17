@@ -8,6 +8,9 @@ export class Category {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   color: string;
+
+  @Column({ default: 1 })
+  type: 1 | 2 | 3;
 }

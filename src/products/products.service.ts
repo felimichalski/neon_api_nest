@@ -22,10 +22,23 @@ export class ProductsService {
     return this.productsRepository.find();
   }
 
+  findByCategory(categoryId) {
+    return this.productsRepository.findAndCountBy({
+      category: categoryId,
+    });
+  }
+
+  findByType(type) {
+    return this.productsRepository
+      .createQueryBuilder('product')
+      .innerJoin('product.category', 'category', `category.type = ${type}`)
+      .getManyAndCount();
+  }
+
   findAllFeatured() {
     return this.productsRepository
       .createQueryBuilder('product')
-      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.category', 'assd')
       .where('product.isFeatured = true')
       .getMany();
   }
