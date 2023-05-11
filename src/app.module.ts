@@ -11,6 +11,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PaymentsModule } from './payments/payments.module';
+import { PublicsModule } from './publics/publics.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { PaymentsModule } from './payments/payments.module';
     AuthModule,
     UsersModule,
     PaymentsModule,
+    PublicsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
