@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PublicsService } from './publics.service';
 import { CreatePublicDto } from './dto/create-public.dto';
@@ -25,9 +26,9 @@ export class PublicsController {
     return this.publicsService.findAll();
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePublicDto: UpdatePublicDto) {
-    return this.publicsService.update(+id, updatePublicDto);
+  @Patch()
+  update(@Body() updatePublicDto: UpdatePublicDto) {
+    return this.publicsService.update(updatePublicDto);
   }
 
   @Delete(':id')
