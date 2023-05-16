@@ -6,5 +6,8 @@ export class Public {
   id: number;
 
   @Column()
+  name: string;
+
+  @Column()
   content: string;
 }
