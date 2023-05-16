@@ -1,4 +1,4 @@
 export class CreatePublicDto {
   content: string;
-  identifyier: number;
+  name?: string;
 }
