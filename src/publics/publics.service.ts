@@ -25,8 +25,11 @@ export class PublicsService {
     return `This action returns a #${id} public`;
   } */
 
-  update(id: number, updatePublicDto: UpdatePublicDto) {
-    return this.publicsRepository.update(id, updatePublicDto);
+  update(updatePublicDto: UpdatePublicDto) {
+    return this.publicsRepository.update(
+      { name: updatePublicDto.name },
+      updatePublicDto,
+    );
   }
 
   remove(id: number) {
