@@ -22,6 +22,12 @@ export class Product {
   @Column('float')
   unit_price: number;
 
+  @Column()
+  size: string;
+
+  @Column()
+  color: boolean;
+
   @ManyToOne(() => Category, { cascade: true })
   @JoinColumn({ name: 'category' })
   @Column({ default: 1 })

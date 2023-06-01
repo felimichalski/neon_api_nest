@@ -12,6 +12,11 @@ export class CreateProductDto {
   @IsNotEmpty()
   unit_price: number;
 
+  size?: string;
+
+  @IsNotEmpty()
+  color: boolean;
+
   category?: number;
 
   @IsNotEmpty()
