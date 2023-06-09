@@ -19,7 +19,10 @@ export class ProductsService {
   }
 
   findAll() {
-    return this.productsRepository.find();
+    return this.productsRepository
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.category', 'category')
+      .getMany();
   }
 
   findByCategory(categoryId) {
@@ -38,7 +41,7 @@ export class ProductsService {
   findAllFeatured() {
     return this.productsRepository
       .createQueryBuilder('product')
-      .leftJoinAndSelect('product.category', 'assd')
+      .leftJoinAndSelect('product.category', 'category')
       .where('product.isFeatured = true')
       .getMany();
   }
@@ -48,6 +51,7 @@ export class ProductsService {
       where: {
         id,
       },
+      relations: ['category'],
     });
   }
 
