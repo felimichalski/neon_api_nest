@@ -12,8 +12,8 @@ async function bootstrap() {
   });
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
-  app.use(bodyParser.json({ limit: '50mb' }));
-  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+  app.use(bodyParser.json({ limit: '500mb' }));
+  app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
   await app.listen(process.env.PORT || 3001);
 }
 bootstrap();
