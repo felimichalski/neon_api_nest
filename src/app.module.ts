@@ -7,7 +7,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoriesModule } from './categories/categories.module';
 import { ProductsModule } from './products/products.module';
 import { SocialModule } from './social/social.module';
-import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PaymentsModule } from './payments/payments.module';
@@ -30,7 +29,6 @@ import { MediafilesModule } from './mediafiles/mediafiles.module';
     ProductsModule,
     CategoriesModule,
     SocialModule,
-    CloudinaryModule,
     AuthModule,
     UsersModule,
     PaymentsModule,
