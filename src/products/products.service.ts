@@ -1,21 +1,32 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
+import { MediafilesService } from 'src/mediafiles/mediafiles.service';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productsRepository: Repository<Product>,
+    private readonly mediafilesService: MediafilesService,
   ) {}
 
-  create(createProductDto: CreateProductDto) {
-    const product = this.productsRepository.create(createProductDto);
-
-    return this.productsRepository.save(product);
+  async create(createProductDto: CreateProductDto) {
+    try {
+      const product = this.productsRepository.create(createProductDto);
+      const response = await this.productsRepository.save(product);
+      return response;
+    } catch (error) {
+      console.error(error);
+      const files = createProductDto.image.split(',');
+      for (const file of files) {
+        await this.mediafilesService.delete(file);
+      }
+      throw new HttpException('Cannot save product', HttpStatus.BAD_REQUEST);
+    }
   }
 
   findAll() {

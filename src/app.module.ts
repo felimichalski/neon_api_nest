@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { PaymentsModule } from './payments/payments.module';
 import { PublicsModule } from './publics/publics.module';
+import { MediafilesModule } from './mediafiles/mediafiles.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { PublicsModule } from './publics/publics.module';
     UsersModule,
     PaymentsModule,
     PublicsModule,
+    MediafilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

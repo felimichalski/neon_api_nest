@@ -6,8 +6,7 @@ export class CreateProductDto {
   @MaxLength(15)
   title: string;
 
-  @IsNotEmpty()
-  image: string;
+  image?: string;
 
   @IsNotEmpty()
   unit_price: number;

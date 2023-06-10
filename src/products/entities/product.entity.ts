@@ -36,6 +36,6 @@ export class Product {
   @Column('text')
   description: string;
 
-  @Column()
+  @Column({ default: false })
   isFeatured: boolean;
 }

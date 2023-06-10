@@ -6,17 +6,40 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { MediafilesService } from 'src/mediafiles/mediafiles.service';
+
+const FilesInterceptorObj = FilesInterceptor('files', 10, {
+  fileFilter: (_, file, cb) => {
+    !['image', 'video'].includes(file.mimetype.split('/')[0]) ||
+    file.size > 10000000
+      ? cb(null, false)
+      : cb(null, true);
+  },
+});
 
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(
+    private readonly productsService: ProductsService,
+    private readonly mediafilesService: MediafilesService,
+  ) {}
 
   @Post()
-  create(@Body() createProductDto: CreateProductDto) {
+  @UseInterceptors(FilesInterceptorObj)
+  async create(
+    @Body() createProductDto: CreateProductDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    const fileUrls = await this.mediafilesService.create(files);
+    createProductDto.image = fileUrls;
+
     return this.productsService.create(createProductDto);
   }
 
