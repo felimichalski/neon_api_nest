@@ -2,8 +2,6 @@ import { IsNotEmpty, MinLength, MaxLength } from 'class-validator';
 
 export class CreateProductDto {
   @IsNotEmpty()
-  @MinLength(4)
-  @MaxLength(15)
   title: string;
 
   image?: string;
@@ -21,5 +19,5 @@ export class CreateProductDto {
   @IsNotEmpty()
   description: string;
 
-  isFeatured?: boolean;
+  is_featured?: boolean;
 }

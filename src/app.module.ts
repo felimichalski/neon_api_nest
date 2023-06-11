@@ -12,12 +12,13 @@ import { UsersModule } from './users/users.module';
 import { PaymentsModule } from './payments/payments.module';
 import { PublicsModule } from './publics/publics.module';
 import { MediafilesModule } from './mediafiles/mediafiles.module';
+import { TypesModule } from './types/types.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'postgres',
       host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT),
       username: process.env.DB_USER,
@@ -34,6 +35,7 @@ import { MediafilesModule } from './mediafiles/mediafiles.module';
     PaymentsModule,
     PublicsModule,
     MediafilesModule,
+    TypesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

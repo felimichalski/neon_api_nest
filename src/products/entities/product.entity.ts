@@ -37,5 +37,5 @@ export class Product {
   description: string;
 
   @Column({ default: false })
-  isFeatured: boolean;
+  is_featured: boolean;
 }

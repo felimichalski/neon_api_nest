@@ -37,7 +37,7 @@ export class ProductsService {
   }
 
   findByCategory(categoryId) {
-    return this.productsRepository.findAndCountBy({
+    return this.productsRepository.findBy({
       category: categoryId,
     });
   }
@@ -46,14 +46,14 @@ export class ProductsService {
     return this.productsRepository
       .createQueryBuilder('product')
       .innerJoin('product.category', 'category', `category.type = ${type}`)
-      .getManyAndCount();
+      .getMany();
   }
 
   findAllFeatured() {
     return this.productsRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.category', 'category')
-      .where('product.isFeatured = true')
+      .where('product.is_featured = true')
       .getMany();
   }
 

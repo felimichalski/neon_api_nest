@@ -48,14 +48,14 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
-  @Get('category/:categoryId')
-  findByCategory(@Param('categoryId') categoryId: string) {
-    return this.productsService.findByCategory(+categoryId);
-  }
-
-  @Get('type/:type')
+  @Get('filter/:type')
   findByType(@Param('type') type: string) {
     return this.productsService.findByType(+type);
+  }
+
+  @Get('filter/:type/:categoryId')
+  findByCategory(@Param('categoryId') categoryId: string) {
+    return this.productsService.findByCategory(+categoryId);
   }
 
   @Get('featured')

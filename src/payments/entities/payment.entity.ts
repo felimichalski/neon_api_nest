@@ -12,7 +12,7 @@ export class Payment {
   @PrimaryGeneratedColumn()
   id?: number;
 
-  @Column('longtext')
+  @Column('text')
   items: string;
 
   @Column()
