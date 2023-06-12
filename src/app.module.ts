@@ -13,6 +13,8 @@ import { PaymentsModule } from './payments/payments.module';
 import { PublicsModule } from './publics/publics.module';
 import { MediafilesModule } from './mediafiles/mediafiles.module';
 import { TypesModule } from './types/types.module';
+import { SizesModule } from './sizes/sizes.module';
+import { ColorsModule } from './colors/colors.module';
 
 @Module({
   imports: [
@@ -36,6 +38,8 @@ import { TypesModule } from './types/types.module';
     PublicsModule,
     MediafilesModule,
     TypesModule,
+    SizesModule,
+    ColorsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

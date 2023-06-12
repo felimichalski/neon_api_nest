@@ -14,17 +14,13 @@ export class ProductsService {
     private readonly mediafilesService: MediafilesService,
   ) {}
 
-  async create(createProductDto: CreateProductDto) {
+  async create(newProduct) {
     try {
-      const product = this.productsRepository.create(createProductDto);
+      const product = this.productsRepository.create(newProduct);
       const response = await this.productsRepository.save(product);
       return response;
     } catch (error) {
-      console.error(error);
-      const files = createProductDto.image.split(',');
-      for (const file of files) {
-        await this.mediafilesService.delete(file);
-      }
+      await this.mediafilesService.delete(newProduct.image);
       throw new HttpException('Cannot save product', HttpStatus.BAD_REQUEST);
     }
   }
@@ -67,7 +63,7 @@ export class ProductsService {
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
-    return this.productsRepository.update(id, updateProductDto);
+    // return this.productsRepository.update(id, updateProductDto);
   }
 
   remove(id: number) {

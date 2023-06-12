@@ -18,8 +18,8 @@ export class Category {
   @Column({ nullable: true })
   color: string;
 
-  @ManyToOne(() => Type, { cascade: true })
+  @ManyToOne(() => Type, (type) => type.categories)
   @JoinColumn({ name: 'type' })
   @Column()
-  type: number;
+  type: Type;
 }

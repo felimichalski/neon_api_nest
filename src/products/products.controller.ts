@@ -14,6 +14,9 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { MediafilesService } from 'src/mediafiles/mediafiles.service';
+import { ColorsService } from 'src/colors/colors.service';
+import { SizesService } from 'src/sizes/sizes.service';
+import { Product } from './entities/product.entity';
 
 const FilesInterceptorObj = FilesInterceptor('files', 10, {
   fileFilter: (_, file, cb) => {
@@ -29,6 +32,8 @@ export class ProductsController {
   constructor(
     private readonly productsService: ProductsService,
     private readonly mediafilesService: MediafilesService,
+    private readonly colorsService: ColorsService,
+    private readonly sizesService: SizesService,
   ) {}
 
   @Post()
@@ -38,9 +43,17 @@ export class ProductsController {
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
     const fileUrls = await this.mediafilesService.create(files);
-    createProductDto.image = fileUrls;
+    const colors = await this.colorsService.findByIds(createProductDto.colors);
+    const sizes = await this.sizesService.findByIds(createProductDto.sizes);
 
-    return this.productsService.create(createProductDto);
+    const newProduct = {
+      ...createProductDto,
+      colors,
+      sizes,
+      image: fileUrls,
+    };
+
+    return this.productsService.create(newProduct);
   }
 
   @Get()

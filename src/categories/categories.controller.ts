@@ -25,14 +25,9 @@ export class CategoriesController {
     return this.categoriesService.findAll();
   }
 
-  @Get('/types')
-  findAllByTypes() {
-    return this.categoriesService.findAllByTypes();
-  }
-
-  @Get('type/:type')
-  findByType(@Param('type') type: string) {
-    return this.categoriesService.findByType(+type);
+  @Get('thin')
+  findAllThin() {
+    return this.categoriesService.findAllThin();
   }
 
   @Get(':id')

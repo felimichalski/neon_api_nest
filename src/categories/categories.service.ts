@@ -16,39 +16,27 @@ export class CategoriesService {
     return 'This action adds a new category';
   }
 
-  findAll() {
-    return this.categoryRepository.find();
+  async findAll() {
+    const response = await this.categoryRepository.find();
+    console.log(response);
+    return response;
   }
 
-  async findAllByTypes() {
-    const firstType = await this.categoryRepository.findBy({
-      type: 1,
-    });
-
-    const secondType = await this.categoryRepository.findBy({
-      type: 2,
-    });
-
-    const thirdType = await this.categoryRepository.findBy({
-      type: 3,
-    });
-
-    return {
-      firstType,
-      secondType,
-      thirdType,
-    };
-  }
-
-  findByType(type) {
-    return this.categoryRepository.findBy({
-      type,
-    });
+  findAllThin() {
+    return this.categoryRepository
+      .createQueryBuilder('category')
+      .select(['id AS value', 'name AS label'])
+      .getRawMany();
   }
 
   async findOne(id: number) {
-    return this.categoryRepository.findOneBy({
-      id,
+    return this.categoryRepository.findOne({
+      relations: {
+        type: true,
+      },
+      where: {
+        id,
+      },
     });
   }
 
