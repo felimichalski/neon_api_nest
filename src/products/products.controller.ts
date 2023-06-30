@@ -16,7 +16,6 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { MediafilesService } from 'src/mediafiles/mediafiles.service';
 import { ColorsService } from 'src/colors/colors.service';
 import { SizesService } from 'src/sizes/sizes.service';
-import { Product } from './entities/product.entity';
 
 const FilesInterceptorObj = FilesInterceptor('files', 10, {
   fileFilter: (_, file, cb) => {
@@ -42,15 +41,15 @@ export class ProductsController {
     @Body() createProductDto: CreateProductDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    const fileUrls = await this.mediafilesService.create(files);
-    const colors = await this.colorsService.findByIds(createProductDto.colors);
+    const uploadedFiles = await this.mediafilesService.upload(files);
     const sizes = await this.sizesService.findByIds(createProductDto.sizes);
 
     const newProduct = {
       ...createProductDto,
-      colors,
       sizes,
-      image: fileUrls,
+      color: JSON.parse(createProductDto.color),
+      is_featured: JSON.parse(createProductDto.is_featured),
+      images: uploadedFiles,
     };
 
     return this.productsService.create(newProduct);

@@ -5,12 +5,14 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { Category } from 'src/categories/entities/category.entity';
 import { Size } from 'src/sizes/entities/size.entity';
 import { Color } from 'src/colors/entities/color.entity';
+import { Mediafile } from 'src/mediafiles/entities/mediafile.entity';
 
 @Entity()
 export class Product {
@@ -20,8 +22,11 @@ export class Product {
   @Column()
   title: string;
 
-  @Column()
-  image: string;
+  @OneToMany(() => Mediafile, (mediafile) => mediafile.product, {
+    cascade: true,
+    eager: true,
+  })
+  images: Mediafile[];
 
   @Column('float')
   unit_price: number;
@@ -30,9 +35,8 @@ export class Product {
   @JoinTable()
   sizes: Size[];
 
-  @ManyToMany(() => Color, { cascade: true })
-  @JoinTable()
-  colors: Color[];
+  @Column()
+  color: boolean;
 
   @ManyToOne(() => Category, { cascade: true })
   @JoinColumn({ name: 'category' })

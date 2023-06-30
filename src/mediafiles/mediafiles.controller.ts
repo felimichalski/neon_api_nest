@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Res, StreamableFile } from '@nestjs/common';
+import { Controller, Get, Param, Res } from '@nestjs/common';
 import { MediafilesService } from './mediafiles.service';
 
 @Controller('mediafiles')

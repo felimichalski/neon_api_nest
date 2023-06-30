@@ -10,7 +10,7 @@ import {
 @Entity()
 export class Payment {
   @PrimaryGeneratedColumn()
-  id?: number;
+  id: number;
 
   @Column('text')
   items: string;

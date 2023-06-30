@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 import { MediafilesService } from 'src/mediafiles/mediafiles.service';
@@ -16,10 +15,17 @@ export class ProductsService {
 
   async create(newProduct) {
     try {
-      const product = this.productsRepository.create(newProduct);
+      const product = this.productsRepository.create(newProduct as Product);
       const response = await this.productsRepository.save(product);
+      // for (const image in newProduct.images) {
+      //   await this.mediafilesService.create({
+      //     key: `${process.env.AWS_S3_FOLDERNAME}/${image}`,
+      //     product: response.id,
+      //   });
+      // }
       return response;
     } catch (error) {
+      console.error(error);
       await this.mediafilesService.delete(newProduct.image);
       throw new HttpException('Cannot save product', HttpStatus.BAD_REQUEST);
     }
@@ -29,6 +35,7 @@ export class ProductsService {
     return this.productsRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.images', 'images')
       .getMany();
   }
 
@@ -42,6 +49,7 @@ export class ProductsService {
     return this.productsRepository
       .createQueryBuilder('product')
       .innerJoin('product.category', 'category', `category.type = ${type}`)
+      .leftJoinAndSelect('product.images', 'images')
       .getMany();
   }
 
@@ -49,6 +57,7 @@ export class ProductsService {
     return this.productsRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.images', 'images')
       .where('product.is_featured = true')
       .getMany();
   }
