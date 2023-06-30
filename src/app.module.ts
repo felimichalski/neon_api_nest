@@ -7,13 +7,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoriesModule } from './categories/categories.module';
 import { ProductsModule } from './products/products.module';
 import { SocialModule } from './social/social.module';
-import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { PaymentsModule } from './payments/payments.module';
+import { PublicsModule } from './publics/publics.module';
+import { MediafilesModule } from './mediafiles/mediafiles.module';
+import { TypesModule } from './types/types.module';
+import { SizesModule } from './sizes/sizes.module';
+import { ColorsModule } from './colors/colors.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'postgres',
       host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT),
       username: process.env.DB_USER,
@@ -25,7 +32,14 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     ProductsModule,
     CategoriesModule,
     SocialModule,
-    CloudinaryModule,
+    AuthModule,
+    UsersModule,
+    PaymentsModule,
+    PublicsModule,
+    MediafilesModule,
+    TypesModule,
+    SizesModule,
+    ColorsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
