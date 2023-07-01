@@ -67,17 +67,20 @@ export class MediafilesService {
     }
   }
 
-  async delete(objectKey: string) {
-    const command = new DeleteObjectCommand({
-      Bucket: process.env.AWS_S3_BUCKETNAME,
-      Key: `${process.env.AWS_S3_FOLDERNAME}/${objectKey}`,
-    });
-    try {
-      return await await this.s3Client.send(command);
-    } catch (error) {
-      if (error.Code !== 'AccessDenied') {
-        console.log(error);
+  async delete(mediafiles: Mediafile[]) {
+    for (const file of mediafiles) {
+      const command = new DeleteObjectCommand({
+        Bucket: process.env.AWS_S3_BUCKETNAME,
+        Key: `${process.env.AWS_S3_FOLDERNAME}/${file.key}`,
+      });
+      try {
+        await this.s3Client.send(command);
+      } catch (error) {
+        if (error.Code !== 'AccessDenied') {
+          console.log(error);
+        }
       }
     }
+    return;
   }
 }

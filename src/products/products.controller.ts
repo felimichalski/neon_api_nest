@@ -14,8 +14,9 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { MediafilesService } from 'src/mediafiles/mediafiles.service';
-import { ColorsService } from 'src/colors/colors.service';
 import { SizesService } from 'src/sizes/sizes.service';
+import { Size } from 'src/sizes/entities/size.entity';
+import { CategoriesService } from 'src/categories/categories.service';
 
 const FilesInterceptorObj = FilesInterceptor('files', 10, {
   fileFilter: (_, file, cb) => {
@@ -31,7 +32,7 @@ export class ProductsController {
   constructor(
     private readonly productsService: ProductsService,
     private readonly mediafilesService: MediafilesService,
-    private readonly colorsService: ColorsService,
+    private readonly categoriesService: CategoriesService,
     private readonly sizesService: SizesService,
   ) {}
 
@@ -42,11 +43,15 @@ export class ProductsController {
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
     const uploadedFiles = await this.mediafilesService.upload(files);
-    const sizes = await this.sizesService.findByIds(createProductDto.sizes);
+    const categories = await this.categoriesService.findByIds(
+      createProductDto.categories,
+    );
+    const size = this.buildSizeFromDto(createProductDto);
 
     const newProduct = {
       ...createProductDto,
-      sizes,
+      categories,
+      size,
       color: JSON.parse(createProductDto.color),
       is_featured: JSON.parse(createProductDto.is_featured),
       images: uploadedFiles,
@@ -86,7 +91,24 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try {
+      const product = await this.productsService.findOne(+id);
+      await this.productsService.remove(+id);
+      await this.sizesService.remove(product.size.id);
+      return this.mediafilesService.delete(product.images);
+    } catch (error) {}
+  }
+
+  private buildSizeFromDto(createProductDto: CreateProductDto) {
+    const size: Size = {
+      small_width: createProductDto.small_width,
+      small_height: createProductDto.small_height,
+      medium_width: createProductDto.medium_width,
+      medium_height: createProductDto.medium_height,
+      large_width: createProductDto.large_width,
+      large_height: createProductDto.large_height,
+    };
+    return size;
   }
 }

@@ -1,4 +1,5 @@
 import {
+  AfterRemove,
   Column,
   Entity,
   JoinColumn,
@@ -7,11 +8,11 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  getRepository,
 } from 'typeorm';
 
 import { Category } from 'src/categories/entities/category.entity';
 import { Size } from 'src/sizes/entities/size.entity';
-import { Color } from 'src/colors/entities/color.entity';
 import { Mediafile } from 'src/mediafiles/entities/mediafile.entity';
 
 @Entity()
@@ -31,17 +32,17 @@ export class Product {
   @Column('float')
   unit_price: number;
 
-  @ManyToMany(() => Size, { cascade: true })
-  @JoinTable()
-  sizes: Size[];
+  @ManyToOne(() => Size, { cascade: true })
+  @JoinColumn({ name: 'size' })
+  @Column()
+  size: Size;
 
   @Column()
   color: boolean;
 
-  @ManyToOne(() => Category, { cascade: true })
-  @JoinColumn({ name: 'category' })
-  @Column({ default: 1 })
-  category: Category;
+  @ManyToMany(() => Category, { cascade: true })
+  @JoinTable({ name: 'categories' })
+  categories: Category[];
 
   @Column('text')
   description: string;

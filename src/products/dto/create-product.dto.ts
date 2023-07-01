@@ -1,4 +1,4 @@
-import { IsNotEmpty, MinLength, MaxLength } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateProductDto {
   @IsNotEmpty()
@@ -11,7 +11,16 @@ export class CreateProductDto {
 
   color: string;
 
-  category: number;
+  categories: number[];
+
+  small_width: number;
+  small_height: number;
+
+  medium_width: number;
+  medium_height: number;
+
+  large_width: number;
+  large_height: number;
 
   @IsNotEmpty()
   description: string;

@@ -1,17 +1,31 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Product } from 'src/products/entities/product.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Size {
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Column()
-  name: string;
+  small_width: number;
 
   @Column()
-  code: string;
+  small_height: number;
+
+  @Column()
+  medium_width: number;
+
+  @Column()
+  medium_height: number;
+
+  @Column()
+  large_width: number;
+
+  @Column()
+  large_height: number;
+
+  @OneToMany(() => Product, (product) => product.size, {
+    onDelete: 'CASCADE',
+  })
+  product?: Product[];
 }
