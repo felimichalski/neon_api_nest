@@ -41,6 +41,6 @@ export class SizesService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} size`;
+    return this.sizeRepository.delete(id);
   }
 }

@@ -18,7 +18,6 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createPaymentDto: CreatePaymentDto, @Req() req) {
     return this.paymentsService.create(createPaymentDto, req.user);

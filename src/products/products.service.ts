@@ -15,15 +15,8 @@ export class ProductsService {
 
   async create(newProduct) {
     try {
-      const product = this.productsRepository.create(newProduct as Product);
-      const response = await this.productsRepository.save(product);
-      // for (const image in newProduct.images) {
-      //   await this.mediafilesService.create({
-      //     key: `${process.env.AWS_S3_FOLDERNAME}/${image}`,
-      //     product: response.id,
-      //   });
-      // }
-      return response;
+      const product = this.productsRepository.create(newProduct);
+      return this.productsRepository.save(product);
     } catch (error) {
       console.error(error);
       await this.mediafilesService.delete(newProduct.image);
@@ -34,21 +27,28 @@ export class ProductsService {
   findAll() {
     return this.productsRepository
       .createQueryBuilder('product')
-      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.categories', 'category')
       .leftJoinAndSelect('product.images', 'images')
       .getMany();
   }
 
   findByCategory(categoryId) {
-    return this.productsRepository.findBy({
-      category: categoryId,
-    });
+    return this.productsRepository
+      .createQueryBuilder('product')
+      .innerJoinAndSelect(
+        'product.categories',
+        'category',
+        'category.id = :categoryId',
+        { categoryId },
+      )
+      .leftJoinAndSelect('product.images', 'images')
+      .getMany();
   }
 
   findByType(type) {
     return this.productsRepository
       .createQueryBuilder('product')
-      .innerJoin('product.category', 'category', `category.type = ${type}`)
+      .innerJoin('product.categories', 'category', `category.type = ${type}`)
       .leftJoinAndSelect('product.images', 'images')
       .getMany();
   }
@@ -56,7 +56,7 @@ export class ProductsService {
   findAllFeatured() {
     return this.productsRepository
       .createQueryBuilder('product')
-      .leftJoinAndSelect('product.category', 'category')
+      .leftJoinAndSelect('product.categories', 'category')
       .leftJoinAndSelect('product.images', 'images')
       .where('product.is_featured = true')
       .getMany();
@@ -67,7 +67,7 @@ export class ProductsService {
       where: {
         id,
       },
-      relations: ['category'],
+      relations: ['categories', 'size'],
     });
   }
 
