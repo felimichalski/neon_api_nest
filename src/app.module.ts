@@ -15,6 +15,7 @@ import { MediafilesModule } from './mediafiles/mediafiles.module';
 import { TypesModule } from './types/types.module';
 import { SizesModule } from './sizes/sizes.module';
 import { ColorsModule } from './colors/colors.module';
+import { DiscountModule } from './discount/discount.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { ColorsModule } from './colors/colors.module';
     TypesModule,
     SizesModule,
     ColorsModule,
+    DiscountModule,
   ],
   controllers: [AppController],
   providers: [AppService],
