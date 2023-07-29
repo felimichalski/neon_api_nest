@@ -17,6 +17,7 @@ import { MediafilesService } from 'src/mediafiles/mediafiles.service';
 import { SizesService } from 'src/sizes/sizes.service';
 import { Size } from 'src/sizes/entities/size.entity';
 import { CategoriesService } from 'src/categories/categories.service';
+import { Price } from 'src/price/entities/price.entity';
 
 const FilesInterceptorObj = FilesInterceptor('files', 10, {
   fileFilter: (_, file, cb) => {
@@ -47,11 +48,13 @@ export class ProductsController {
       createProductDto.categories,
     );
     const size = this.buildSizeFromDto(createProductDto);
+    const price = this.buildPriceFromDto(createProductDto);
 
     const newProduct = {
       ...createProductDto,
       categories,
       size,
+      price,
       color: JSON.parse(createProductDto.color),
       is_featured: JSON.parse(createProductDto.is_featured),
       images: uploadedFiles,
@@ -100,8 +103,8 @@ export class ProductsController {
     } catch (error) {}
   }
 
-  private buildSizeFromDto(createProductDto: CreateProductDto) {
-    const size: Size = {
+  private buildSizeFromDto(createProductDto: CreateProductDto): Size {
+    return {
       small_width: createProductDto.small_width,
       small_height: createProductDto.small_height,
       medium_width: createProductDto.medium_width,
@@ -109,6 +112,13 @@ export class ProductsController {
       large_width: createProductDto.large_width,
       large_height: createProductDto.large_height,
     };
-    return size;
+  }
+
+  private buildPriceFromDto(createProductDto: CreateProductDto): Price {
+    return {
+      small: createProductDto.small_price,
+      medium: createProductDto.medium_price,
+      large: createProductDto.large_price,
+    };
   }
 }

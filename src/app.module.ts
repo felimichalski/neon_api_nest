@@ -16,6 +16,7 @@ import { TypesModule } from './types/types.module';
 import { SizesModule } from './sizes/sizes.module';
 import { ColorsModule } from './colors/colors.module';
 import { DiscountModule } from './discount/discount.module';
+import { PriceModule } from './price/price.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { DiscountModule } from './discount/discount.module';
     SizesModule,
     ColorsModule,
     DiscountModule,
+    PriceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
