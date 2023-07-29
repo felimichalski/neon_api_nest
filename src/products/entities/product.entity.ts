@@ -1,19 +1,18 @@
 import {
-  AfterRemove,
   Column,
   Entity,
   JoinColumn,
   JoinTable,
   ManyToMany,
-  ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
-  getRepository,
 } from 'typeorm';
 
 import { Category } from 'src/categories/entities/category.entity';
 import { Size } from 'src/sizes/entities/size.entity';
 import { Mediafile } from 'src/mediafiles/entities/mediafile.entity';
+import { Price } from 'src/price/entities/price.entity';
 
 @Entity()
 export class Product {
@@ -29,10 +28,12 @@ export class Product {
   })
   images: Mediafile[];
 
-  @Column('float')
-  unit_price: number;
+  @OneToOne(() => Price, { cascade: true })
+  @JoinColumn({ name: 'price' })
+  @Column({ nullable: true })
+  price: Price;
 
-  @ManyToOne(() => Size, { cascade: true })
+  @OneToOne(() => Size, { cascade: true })
   @JoinColumn({ name: 'size' })
   @Column()
   size: Size;

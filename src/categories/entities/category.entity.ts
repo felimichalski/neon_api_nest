@@ -20,6 +20,6 @@ export class Category {
 
   @ManyToOne(() => Type, (type) => type.categories)
   @JoinColumn({ name: 'type' })
-  @Column()
+  @Column({ nullable: true })
   type: Type;
 }

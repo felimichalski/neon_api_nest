@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,8 +12,14 @@ export class CategoriesService {
     private readonly categoryRepository: Repository<Category>,
   ) {}
 
-  create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+  async create(newCategory) {
+    try {
+      const category = this.categoryRepository.create(newCategory);
+      return this.categoryRepository.save(category);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException('Cannot save category', HttpStatus.BAD_REQUEST);
+    }
   }
 
   async findAll() {
@@ -51,6 +57,6 @@ export class CategoriesService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} category`;
+    return this.categoryRepository.delete(id);
   }
 }

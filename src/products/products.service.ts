@@ -67,7 +67,7 @@ export class ProductsService {
       where: {
         id,
       },
-      relations: ['categories', 'size'],
+      relations: ['categories', 'size', 'price'],
     });
   }
 
