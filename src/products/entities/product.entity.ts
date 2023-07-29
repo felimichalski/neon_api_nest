@@ -29,11 +29,6 @@ export class Product {
   images: Mediafile[];
 
   @OneToOne(() => Price, { cascade: true })
-  @JoinColumn({ name: 'unit_price' })
-  @Column({ nullable: true })
-  unit_price: Price;
-
-  @OneToOne(() => Price, { cascade: true })
   @JoinColumn({ name: 'price' })
   @Column({ nullable: true })
   price: Price;

@@ -15,7 +15,7 @@ export class Price {
   @Column()
   large: number;
 
-  @OneToOne(() => Product, (product) => product.unit_price, {
+  @OneToOne(() => Product, (product) => product.price, {
     onDelete: 'CASCADE',
   })
   product?: Product;
