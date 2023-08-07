@@ -10,6 +10,7 @@ async function bootstrap() {
     ? app.enableCors({
         origin: [
           'https://neoninfinito.com.ar',
+          'https://www.neoninfinito.com.ar',
         ],
         credentials: true,
       })
