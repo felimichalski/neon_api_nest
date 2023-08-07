@@ -9,8 +9,8 @@ async function bootstrap() {
   process.env.APPENV == 'PRODUCTION'
     ? app.enableCors({
         origin: [
-          'https://webinmobiliaria.com.ar',
-          'https://www.webinmobiliaria.com.ar',
+          'https://neoninfinito.com.ar',
+          'https://www.neoninfinito.com.ar',
         ],
         credentials: true,
       })
