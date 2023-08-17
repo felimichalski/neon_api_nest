@@ -26,15 +26,17 @@ export class TypesService {
       .leftJoinAndSelect('types.categories', 'categories')
       .orderBy('categories.name', 'ASC')
       .getMany();
-    return this.typeRepository.find({
-      relations: {
-        categories: true,
-      },
-    });
   }
 
   findOne(id: number) {
-    return this.typeRepository.findOneBy({ id });
+    return this.typeRepository.findOneBy({
+      id,
+    });
+    // .createQueryBuilder('types')
+    // .leftJoinAndSelect('types.categories', 'categories')
+    // .where(`categories.id = ${id}`)
+    // .orderBy('categories.name', 'ASC')
+    // .getMany();
   }
 
   update(id: number, updateTypeDto: UpdateTypeDto) {

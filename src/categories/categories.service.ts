@@ -24,7 +24,6 @@ export class CategoriesService {
 
   async findAll() {
     const response = await this.categoryRepository.find();
-    console.log(response);
     return response;
   }
 
@@ -39,6 +38,13 @@ export class CategoriesService {
     return this.categoryRepository.findBy({
       id: In(categories),
     });
+  }
+
+  getByType(id: number) {
+    return this.categoryRepository
+      .createQueryBuilder('category')
+      .where(`category.type = ${id}`)
+      .getMany();
   }
 
   async findOne(id: number) {
