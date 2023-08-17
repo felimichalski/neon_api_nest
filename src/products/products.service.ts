@@ -27,8 +27,9 @@ export class ProductsService {
   findAll() {
     return this.productsRepository
       .createQueryBuilder('product')
-      .leftJoinAndSelect('product.categories', 'category')
+      .innerJoinAndSelect('product.categories', 'category')
       .leftJoinAndSelect('product.images', 'images')
+      .leftJoinAndSelect('product.price', 'price')
       .getMany();
   }
 
@@ -42,6 +43,7 @@ export class ProductsService {
         { categoryId },
       )
       .leftJoinAndSelect('product.images', 'images')
+      .leftJoinAndSelect('product.price', 'price')
       .getMany();
   }
 
@@ -50,6 +52,7 @@ export class ProductsService {
       .createQueryBuilder('product')
       .innerJoin('product.categories', 'category', `category.type = ${type}`)
       .leftJoinAndSelect('product.images', 'images')
+      .leftJoinAndSelect('product.price', 'price')
       .getMany();
   }
 
