@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ShippingService } from './shipping.service';
-import { QuoteShippingDTO } from './dto/quoteShippingDTO';
+import { QuoteShippingDTO } from './dto/QuoteShippingDTO';
 import { HttpService } from '@nestjs/axios';
 import { map } from 'rxjs';
 
