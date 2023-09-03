@@ -17,6 +17,7 @@ import { SizesModule } from './sizes/sizes.module';
 import { ColorsModule } from './colors/colors.module';
 import { DiscountModule } from './discount/discount.module';
 import { PriceModule } from './price/price.module';
+import { ShippingModule } from './shipping/shipping.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { PriceModule } from './price/price.module';
     ColorsModule,
     DiscountModule,
     PriceModule,
+    ShippingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

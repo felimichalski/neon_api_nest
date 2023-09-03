@@ -61,6 +61,7 @@ export class ProductsService {
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.categories', 'category')
       .leftJoinAndSelect('product.images', 'images')
+      .leftJoinAndSelect('product.price', 'price')
       .where('product.is_featured = true')
       .getMany();
   }
