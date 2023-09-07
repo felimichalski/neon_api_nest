@@ -1,37 +1,34 @@
-import { User } from 'src/users/entities/user.entity';
+import { Client } from 'src/client/entities/client.entity';
+import { Product } from 'src/products/entities/product.entity';
 import {
   Column,
   Entity,
   JoinColumn,
-  ManyToOne,
+  JoinTable,
+  ManyToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity()
 export class Payment {
   @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column('text')
-  items: string;
+  id?: number;
 
   @Column()
-  amount: number;
-
-  @ManyToOne(() => User, { cascade: true })
-  @JoinColumn({ name: 'user' })
-  @Column()
-  user: number;
+  products: string;
 
   @Column()
-  phone: number;
+  shipping: boolean;
+
+  @OneToOne(() => Client, { cascade: true })
+  @JoinColumn({ name: 'client' })
+  @Column()
+  client: Client;
 
   @Column()
-  address: number;
-
-  @Column()
-  preferenceId: string;
+  preferenceId?: string;
 
   @Column({ default: 'pending' })
-  status: 'pending' | 'success' | 'failure';
+  status?: 'pending' | 'success' | 'failure';
 }
