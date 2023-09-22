@@ -50,4 +50,7 @@ export class Product {
 
   @Column({ default: false })
   is_featured: boolean;
+
+  unit_price?: number;
+  quantity?: number;
 }

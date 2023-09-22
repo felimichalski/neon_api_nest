@@ -6,21 +6,27 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
-  Req,
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { ClientService } from 'src/client/client.service';
 
 @Controller('payments')
 export class PaymentsController {
-  constructor(private readonly paymentsService: PaymentsService) {}
+  constructor(
+    private readonly paymentsService: PaymentsService,
+    private readonly clientService: ClientService,
+  ) {}
 
   @Post()
-  create(@Body() createPaymentDto: CreatePaymentDto, @Req() req) {
-    return this.paymentsService.create(createPaymentDto, req.user);
+  async create(@Body() createPaymentDto: CreatePaymentDto) {
+    try {
+      return this.paymentsService.create(createPaymentDto);
+    } catch (error) {
+      console.log(error);
+      return;
+    }
   }
 
   @Get()

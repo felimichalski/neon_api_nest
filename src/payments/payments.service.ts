@@ -2,11 +2,14 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import * as mercadopago from 'mercadopago';
-import { CreatePreferencePayload } from 'mercadopago/models/preferences/create-payload.model';
-import { User } from 'src/users/entities/user.entity';
+import {
+  CreatePreferencePayload,
+  PreferenceItem,
+} from 'mercadopago/models/preferences/create-payload.model';
 import { Payment } from './entities/payment.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Product } from 'src/products/entities/product.entity';
 
 @Injectable()
 export class PaymentsService {
@@ -14,13 +17,13 @@ export class PaymentsService {
     @InjectRepository(Payment)
     private readonly paymentRepository: Repository<Payment>,
   ) {}
-  async create(createPaymentDto: CreatePaymentDto, user: User) {
+  async create(createPaymentDto: CreatePaymentDto) {
     const preference: CreatePreferencePayload = {
-      items: createPaymentDto.items,
+      items: this.convertToPreferenceItems(createPaymentDto.products),
       back_urls: {
-        success: 'http://localhost:3000/checkout/success',
-        failure: 'http://localhost:3000/checkout/failure',
-        pending: 'http://localhost:3000/checkout/pending',
+        success: `${process.env.FRONT_URL}/checkout/success`,
+        failure: `${process.env.FRONT_URL}/checkout/failure`,
+        pending: `${process.env.FRONT_URL}/checkout/pending`,
       },
       auto_return: 'approved',
     };
@@ -34,7 +37,10 @@ export class PaymentsService {
       // const payment: Payment = {
       //   items: JSON.stringify(createPaymentDto.items),
       // }
-      // await this.paymentRepository.create(payment)
+      const temp = this.buildTempPayment(createPaymentDto);
+      temp.preferenceId = response.body.id;
+      const payment = await this.paymentRepository.create(temp);
+      await this.paymentRepository.save(payment);
       return {
         id: response.body.id,
       };
@@ -61,5 +67,28 @@ export class PaymentsService {
 
   remove(id: number) {
     return `This action removes a #${id} payment`;
+  }
+
+  convertToPreferenceItems(products: Product[]): PreferenceItem[] {
+    const preferenceItems: PreferenceItem[] = [];
+
+    for (const product of products) {
+      const preferenceItem: PreferenceItem = {
+        title: product.title,
+        unit_price: product.unit_price,
+        quantity: product.quantity,
+      };
+      preferenceItems.push(preferenceItem);
+    }
+
+    return preferenceItems;
+  }
+
+  buildTempPayment(createPaymentDto: CreatePaymentDto): Payment {
+    return {
+      client: createPaymentDto.client,
+      products: JSON.stringify(createPaymentDto.products),
+      shipping: createPaymentDto.shipping,
+    };
   }
 }

@@ -1,11 +1,8 @@
-type Item = {
-  title: string;
-  unit_price: number;
-  quantity: number;
-};
+import { Client } from 'src/client/entities/client.entity';
+import { Product } from 'src/products/entities/product.entity';
 
 export class CreatePaymentDto {
-  items: Item[];
-  phone: number;
-  address: string;
+  products: Product[];
+  client: Client;
+  shipping: boolean;
 }
