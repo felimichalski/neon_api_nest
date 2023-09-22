@@ -32,6 +32,9 @@ import { ClientModule } from './client/client.module';
       database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     }),
     ProductsModule,
     CategoriesModule,
