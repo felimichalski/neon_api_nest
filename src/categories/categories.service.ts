@@ -1,19 +1,61 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Category } from './entities/category.entity';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class CategoriesService {
-  create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+  constructor(
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>,
+  ) {}
+
+  async create(newCategory) {
+    try {
+      const category = this.categoryRepository.create(newCategory);
+      return this.categoryRepository.save(category);
+    } catch (error) {
+      console.error(error);
+      throw new HttpException('Cannot save category', HttpStatus.BAD_REQUEST);
+    }
   }
 
-  findAll() {
-    return `This action returns all categories`;
+  async findAll() {
+    const response = await this.categoryRepository.find();
+    return response;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  findAllThin() {
+    return this.categoryRepository
+      .createQueryBuilder('category')
+      .select(['id AS value', 'name AS label'])
+      .getRawMany();
+  }
+
+  findByIds(categories: number[]) {
+    return this.categoryRepository.findBy({
+      id: In(categories),
+    });
+  }
+
+  getByType(id: number) {
+    return this.categoryRepository
+      .createQueryBuilder('category')
+      .where(`category.type = ${id}`)
+      .getMany();
+  }
+
+  async findOne(id: number) {
+    return this.categoryRepository.findOne({
+      relations: {
+        type: true,
+      },
+      where: {
+        id,
+      },
+    });
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {
@@ -21,6 +63,6 @@ export class CategoriesService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} category`;
+    return this.categoryRepository.delete(id);
   }
 }

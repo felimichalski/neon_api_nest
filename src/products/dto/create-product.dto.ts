@@ -1,21 +1,38 @@
-import { IsNotEmpty, MinLength, MaxLength } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateProductDto {
   @IsNotEmpty()
-  @MinLength(4)
-  @MaxLength(15)
-  name: string;
+  title: string;
 
   @IsNotEmpty()
-  image: string;
+  color: string;
 
   @IsNotEmpty()
-  price: number;
+  categories: number[];
 
-  category?: number;
+  @IsNotEmpty()
+  small_width: number;
+  @IsNotEmpty()
+  small_height: number;
+  @IsNotEmpty()
+  small_price: number;
+
+  @IsNotEmpty()
+  medium_width: number;
+  @IsNotEmpty()
+  medium_height: number;
+  @IsNotEmpty()
+  medium_price: number;
+
+  @IsNotEmpty()
+  large_width: number;
+  @IsNotEmpty()
+  large_height: number;
+  @IsNotEmpty()
+  large_price: number;
 
   @IsNotEmpty()
   description: string;
 
-  isFeatured?: boolean;
+  is_featured?: string;
 }

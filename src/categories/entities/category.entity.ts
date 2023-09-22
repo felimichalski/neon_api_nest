@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Type } from 'src/types/entities/type.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Category {
@@ -8,6 +15,11 @@ export class Category {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   color: string;
+
+  @ManyToOne(() => Type, (type) => type.categories)
+  @JoinColumn({ name: 'type' })
+  @Column({ nullable: true })
+  type: Type;
 }
